@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<books>
+  <book>
+    <name></name>
+    <date>2015</date>
+    <price>37￥</price>
+    <description></description>
+  </book>
+  <book>
+    <name></name>
+    <date>2014</date>
+    <price>39￥</price>
+    <description></description>
+  </book>
+  <book>
+    <name></name>
+    <date>2013</date>
+    <price>44￥</price>
+    <description></description>
+  </book>
+</books>
