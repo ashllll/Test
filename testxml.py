@@ -1,10 +1,17 @@
 # coding:utf-8
+# https://codeantenna.com/a/3F24HagWPR 来源
 import os
 import os.path
 import xml.dom.minidom
 
 # path="../xml/"
-path = '/home/kanghao/learning_something/about_xml/xml/' #Mac与Win反斜线定义不一样，开发环境为Mac，Win上注意替换为"\"
+path = input("指纹蒙版文件路径：")
+txt = input("生成的XTX文件：")
+with open(txt, "r") as f:  #打开文件
+    data = f.read()  #读取文件
+    print(data,'请确认文件是否正确！')
+f.close()
+#'''/home/kanghao/learning_something/about_xml/xml/' #Mac与Win反斜线定义不一样，开发环境为Mac，Win上注意替换为"\"'''
 files = os.listdir(path)  # 得到文件夹下所有文件名称
 s = []
 for xmlFile in files:  # 遍历文件夹
@@ -26,7 +33,7 @@ for xmlFile in files:  # 遍历文件夹
             print(brightness[i].firstChild.data)
             a = brightness[i].firstChild.data
             print(type(a))
-            brightness[i].firstChild.data = 200   # 替换的指纹蒙版数据，还未定义数据来源！！！
+            brightness[i].firstChild.data = data   # 替换的指纹蒙版数据，还未定义数据来源！！！
             print(brightness[i].firstChild.data)
 
         '''for j in range(len(ymin)):
@@ -41,8 +48,10 @@ for xmlFile in files:  # 遍历文件夹
             dom.writexml(fh)
             print('恭喜，写入指纹蒙版数据成功！')
 
-if __name__ == "__main__":
+#if __name__ == "__main__":
     # 要求改的指纹蒙版文件
-    path = input("请拖入UDFP:")
+    #path = input("请拖入UDFP:")
     #
+
+
 
