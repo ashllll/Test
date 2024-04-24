@@ -1,0 +1,78 @@
+为了优化代码，我们可以考虑以下几个方面：
+
+1. **错误处理**：添加异常处理来确保文件操作和JSON解析的健壮性。
+2. **用户输入**：改进用户输入文件路径的方式，使其更适合命令行界面。
+3. **代码重用**：将文件读写和JSON处理分离，提高代码的可读性和可维护性。
+4. **性能**：虽然这段代码已经相当简洁，但我们可以确保使用最有效的方法来处理数据。
+
+下面是优化后的代码示例：
+
+```python
+import json
+
+def insert_enter_after_postblend(value):
+    if isinstance(value, dict):
+        return {k: insert_enter_after_postblend(v) for k, v in value.items()}
+    elif isinstance(value, list):
+        return [insert_enter_after_postblend(item) for item in value]
+    elif isinstance(value, str):
+        return value.replace('"PostBlend', '"\nPostBlend')
+    else:
+        return value
+
+def process_json_data(data):
+    # 应用函数处理JSON数据
+    return insert_enter_after_postblend(data)
+
+def read_json_file(json_file_path):
+    try:
+        with open(json_file_path, 'r', encoding='utf-8') as file:
+            return json.load(file)
+    except FileNotFoundError:
+        print(f"文件 {json_file_path} 未找到。")
+        return None
+    except json.JSONDecodeError:
+        print(f"文件 {json_file_path} 不是有效的JSON文件。")
+        return None
+
+def write_json_file(json_file_path, data):
+    try:
+        with open(json_file_path, 'w', encoding='utf-8') as file:
+            json.dump(data, file, ensure_ascii=False, indent=4)
+    except IOError as e:
+        print(f"写入文件时出错: {e}")
+
+def process_json_file(json_file_path):
+    # 读取JSON文件
+    data = read_json_file(json_file_path)
+    if data is not None:
+        # 处理JSON数据
+        data = process_json_data(data)
+        # 写入修改后的JSON数据
+        write_json_file(json_file_path, data)
+        print("处理完成!")
+
+# 从命令行参数获取JSON文件的路径
+if __name__ == "__main__":
+    import sys
+    if len(sys.argv) != 2:
+        print("使用方法: python script.py <json_file_path>")
+    else:
+        json_file_path = sys.argv[1]
+        process_json_file(json_file_path)
+```
+
+**优化点说明：**
+
+- **函数分离**：将文件读取、JSON数据处理和文件写入分离成独立的函数，使得每个函数只负责一个功能，提高代码的清晰度和可维护性。
+- **异常处理**：添加了异常处理来捕获文件未找到或JSON解析错误的情况。
+- **命令行参数**：通过命令行参数接收文件路径，而不是使用 `input` 函数，更适合命令行工具的使用场景。
+- **用户反馈**：在出现错误时，给用户提供清晰的错误信息。
+
+要运行优化后的脚本，用户需要在命令行中提供文件路径作为参数，例如：
+
+```bash
+python script.py example.json
+```
+
+请将 `script.py` 替换为实际的脚本文件名，`example.json` 替换为实际的JSON文件路径。
